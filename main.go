@@ -211,7 +211,11 @@ document.onkeypress = keyPress
 </script>
 </div>
 </html>`
-	http.SetCookie(w, &http.Cookie{Name: "current_" + name, Value: url.Values{"id": {id}, "page": {page}}.Encode()})
+	http.SetCookie(w, &http.Cookie{
+		Name:    "current_" + name,
+		Value:   url.Values{"id": {id}, "page": {page}}.Encode(),
+		Expires: time.Now().Add(365 * 86400 * time.Second),
+	})
 	w.Header().Set("Content-Type", "text/html")
 	w.Write([]byte(html))
 }
