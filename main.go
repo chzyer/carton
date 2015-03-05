@@ -115,7 +115,7 @@ func View(w http.ResponseWriter, req *http.Request) {
 <body>
 <div>
 <img src="/img?` + now + `" id="pic" onclick="next()"/>
-<img style="display:none" src="" />
+<img style="display:none" src="/img?` + np + `" />
 </div>
 <script src="/jquery.js" type="text/javascript"></script>
 <script>
