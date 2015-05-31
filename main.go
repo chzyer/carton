@@ -114,7 +114,7 @@ func View(w http.ResponseWriter, req *http.Request) {
 </head>
 <body>
 <div>
-<img src="/img?` + now + `" id="pic" onclick="next()"/>
+<img src="/img?` + now + `" id="pic" style="display:invisible" onclick="next()"/>
 <img style="display:none" src="/img?` + np + `" />
 </div>
 <script src="/jquery.js" type="text/javascript"></script>
@@ -132,9 +132,9 @@ var right = function(){
 	if ($("img#pic").width() > document.body.clientWidth*1.2) {
 		$("body").animate({scrollLeft: 1000000}, 1)
 	}
+	$("img#pic").css("display", "block")
 }
 $(document).ready(function() {
-	right()
 	$("#pic").load(right)
 })
 function next() {
