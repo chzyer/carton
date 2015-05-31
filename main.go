@@ -114,7 +114,7 @@ func View(w http.ResponseWriter, req *http.Request) {
 </head>
 <body>
 <div>
-<img src="/img?` + now + `" id="pic" style="display:invisible" onclick="next()"/>
+<img src="/img?` + now + `" id="pic" style="visibility: hidden" onclick="next()"/>
 <img style="display:none" src="/img?` + np + `" />
 </div>
 <script src="/jquery.js" type="text/javascript"></script>
@@ -129,13 +129,20 @@ var u = [
 var loading = true
 var notNext = false
 var right = function(){
-	if ($("img#pic").width() > document.body.clientWidth*1.2) {
+	var widthImg = $("img#pic").width()
+	var widthClient = document.body.clientWidth
+console.log(widthImg, widthClient)
+	if (widthImg > widthClient*1.2) {
 		$("body").animate({scrollLeft: 1000000}, 1)
 	}
-	$("img#pic").css("display", "block")
+
+setTimeout(function(){
+	$("img#pic").css("visibility", "block")
+}, 100)
+
 }
 $(document).ready(function() {
-	$("#pic").load(right)
+right()
 })
 function next() {
 	if ($("body").scrollLeft() != 0) {
