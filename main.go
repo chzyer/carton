@@ -129,7 +129,7 @@ var u = [
 var loading = true
 var notNext = false
 var right = function(){
-	if ($(this).width() > document.body.clientWidth*1.2) {
+	if ($("img#pic").width() > document.body.clientWidth*1.2) {
 		$("body").animate({scrollLeft: 1000000}, 1)
 	}
 }
