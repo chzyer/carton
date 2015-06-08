@@ -38,8 +38,6 @@ type content struct {
 
 func Recent(w http.ResponseWriter, req *http.Request) {
 	req.ParseForm()
-	name := req.Form.Get("name")
-	cookies := req.Cookies()
 	html := ""
 	for _, cookie := range cookies {
 		sn := cookie.Name
