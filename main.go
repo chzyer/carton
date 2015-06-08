@@ -39,11 +39,6 @@ type content struct {
 func Recent(w http.ResponseWriter, req *http.Request) {
 	req.ParseForm()
 	name := req.Form.Get("name")
-	cookie, err := req.Cookie("current_" + name)
-	if err == nil {
-		http.Redirect(w, req, "/view?name="+name+"&"+cookie.Value, 302)
-		return
-	}
 	cookies := req.Cookies()
 	html := ""
 	for _, cookie := range cookies {
