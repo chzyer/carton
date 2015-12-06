@@ -12,10 +12,12 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"gopkg.in/logex.v1"
 )
 
 var _ = log.Println
-var host = "http://www.7330.com/"
+var host = "http://www.hanhande.com/"
 var layout = "20060102"
 
 //
@@ -24,11 +26,14 @@ var regexpImg = regexp.MustCompile(`pictureContent(?s:.+?)"([^"]+.(?:jpg|png))"`
 func get(url string) (content []byte, err error) {
 	resp, err := http.Get(url)
 	if err != nil {
-		return
+		return nil, logex.Trace(err)
 	}
 	defer resp.Body.Close()
+	if resp.ContentLength < 0 {
+		resp.ContentLength = 0
+	}
 	content, err = ioutil.ReadAll(resp.Body)
-	return
+	return content, logex.Trace(err)
 }
 
 type content struct {
@@ -61,12 +66,14 @@ func Content(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 	name := req.Form.Get("name")
-	cp := regexp.MustCompile(host + name + `/(\d+).shtml.*title="([^"]+)"`)
+	cp := regexp.MustCompile(`"[^"]+` + name + `/(\d+).shtml.*title="([^"]+)"`)
+	logex.Info(host + name + `/(\d+).shtml.*title="([^"]+)"`)
 	ret, err := get(host + name)
 	if err != nil {
 		http.Error(w, err.Error(), 400)
 		return
 	}
+	logex.Info(string(ret))
 	submatch := cp.FindAllSubmatch(ret, -1)
 	rets := make([]content, len(submatch))
 	for idx, sm := range submatch {
@@ -243,6 +250,7 @@ func Img(w http.ResponseWriter, req *http.Request) {
 	url_ := host + name + "/" + id + page + ".shtml"
 	body, err := get(url_)
 	if err != nil {
+		logex.Error(err)
 		http.Error(w, err.Error(), 400)
 		return
 	}
