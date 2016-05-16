@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"gopkg.in/logex.v1"
+	"github.com/chzyer/logex"
 )
 
 var _ = log.Println
@@ -44,7 +44,7 @@ type content struct {
 func Recent(w http.ResponseWriter, req *http.Request) {
 	req.ParseForm()
 	cookies := req.Cookies()
-	html := ""
+	html := `<html><meta name="viewport" content="height=device-height">`
 	for _, cookie := range cookies {
 		sn := cookie.Name
 		if !strings.HasPrefix(sn, "current_") {
@@ -53,6 +53,7 @@ func Recent(w http.ResponseWriter, req *http.Request) {
 		sn = cookie.Name[8:]
 		html += `<a href="/view?name=` + sn + `&` + cookie.Value + `">` + sn + `</a><br>`
 	}
+	html += "</html>"
 	w.Write([]byte(html))
 }
 
@@ -131,8 +132,8 @@ var loading = true
 var notNext = false
 var right = function(){
 	var widthImg = $("img#pic").width()
-	var widthClient = document.body.clientWidth
-console.log(widthImg, widthClient)
+	var widthClient = window.innerWidth
+console.log(widthImg, widthClient, widthClient*1.2)
 	if (widthImg > widthClient*1.2) {
 		$("body").animate({scrollLeft: 1000000}, 1)
 	}
