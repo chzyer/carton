@@ -113,6 +113,9 @@ func View(w http.ResponseWriter, req *http.Request) {
 <head>
 <meta name="viewport" content="height=device-height">
 <meta charset="utf-8" />
+<style>body{
+	margin: 0;
+}</style>
 </head>
 <body>
 <div>
